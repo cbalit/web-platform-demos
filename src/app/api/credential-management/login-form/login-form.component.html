@@ -1,0 +1,5 @@
+<form #loginForm="ngForm">
+  <md-input placeholder="username" class="full-width" required name="username" ngModel autocomplete="username"></md-input>
+  <md-input placeholder="password" type="password" required name="password" ngModel class="full-width" autocomplete="current-password"></md-input>
+  <button md-raised-button (click)="login(loginForm.value)" [disabled]="!loginForm.form.valid">Login</button>
+</form>

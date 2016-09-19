@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     'name': 'Web Payment',
     'description': 'The purpose of the Web Payments Community Group is to discuss, research, prototype, and create working systems that enable Universal Payment for the Web...'
   }, {
-    'enable': false,
+    'enable': true,
     'logo': 'images/chrome.png',
     'url': 'https://w3c.github.io/webappsec-credential-management/',
     'slug': 'credential-management',

@@ -10,8 +10,12 @@ declare var module: { id: string };
  */
 interface ExtendedNavigator extends Navigator {
   bluetooth: any;
+  credentials:any;
 }
+
 
 interface ExtendedWindow extends Window {
   TextDecoder: any;
+  PasswordCredential(FormData):void;
 }
+

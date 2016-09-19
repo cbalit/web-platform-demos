@@ -4,6 +4,7 @@ import { enableProdMode } from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule }   from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 // MATERIAL DESIGN MODULES
@@ -32,12 +33,14 @@ import { AppRouterModule }  from './app.routes';
 import { HomeComponent }  from './+home/';
 import { FeatureComponent }  from './+feature/';
 import { ApiCardComponent }  from './shared/';
-import { WebBluetoothComponent, BluetoothCore, BrowserWebBluetooth }  from './api/';
+import { WebBluetoothComponent, BluetoothCore, BrowserWebBluetooth}  from './api/';
+import { CredentialManagementComponent,LoginFormComponent,LoginService,CredentialCoreService,BrowserWebCredentials }  from './api/credential-management';
 
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     AppRouterModule,
     ...MD_MODULES
   ],
@@ -47,9 +50,19 @@ import { WebBluetoothComponent, BluetoothCore, BrowserWebBluetooth }  from './ap
     FeatureComponent,
     HomeComponent,
     AppComponent,
+    CredentialManagementComponent,
+    LoginFormComponent
   ],
   providers: [
-    BrowserWebBluetooth
+    BrowserWebBluetooth,
+    LoginService,
+    CredentialCoreService,
+    BrowserWebCredentials
+    // {
+    //   provide: BluetoothCore, useFactory: (dep) => {
+    //     return new BluetoothCore(dep);
+    //   }, deps: [BrowserWebBluetooth]
+    // }
   ],
   bootstrap: [ AppComponent ]
 })

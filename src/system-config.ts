@@ -60,6 +60,10 @@ const barrels: string[] = [
   'app/api/web-bluetooth/heart-monitor',
   'app/api/web-bluetooth/luxometer',
   'app/shared/api-card',
+  'app/api/credential-management',
+  'app/api/credential-management/login-form',
+  'app/api/credential-management/credential-core',
+  'app/api/credential-management/platform',
   /** @cli-barrel */
 ];
 
