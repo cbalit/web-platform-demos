@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { LoginService } from './login.service';
 
 
@@ -18,20 +18,27 @@ export class CredentialManagementComponent implements OnInit {
   private password:string;
   private user:Object;
 
-  constructor(private loginService:LoginService) { }
+  constructor(private loginService:LoginService,private _zone: NgZone) { }
 
   ngOnInit() {
     this.canUse=this.loginService.hasCredentialEnable;
-    this.hasCredentials=this.loginService.hasCredentials;
   }
 
   tryLogin(){
-    if(this.hasCredentials){
-      //TODO autologin
-    }
-    else{
-      this.displayForm=true;
-    }
+    this.loginService.getCredentials().subscribe(cred=>{
+      if(cred){
+        this.loginService.autologin(cred).subscribe(user=>{
+          this._zone.run( () =>  {
+            // force change detection
+            this.user=user;
+            this.displayForm=false;
+          });
+        });
+      }
+      else{
+        this.displayForm=true;
+      }
+    });
   }
 
 
@@ -44,16 +51,20 @@ export class CredentialManagementComponent implements OnInit {
 
   googleLogin(){
     this.loginService.googleLogin().subscribe(user=>{
-      this.user=user;
-      this.displayForm=false;
+      this._zone.run( () =>  {
+        // force change detection
+        this.user=user;
+        this.displayForm=false;
+      });
     });
   }
 
 
   logout(){
-    this.loginService.logout();
-    this.hasCredentials=false;
-    this.user=null;
+    this.loginService.logout().subscribe(()=>{
+      this.hasCredentials=false;
+      this.user=null;
+    });
   }
 
 }

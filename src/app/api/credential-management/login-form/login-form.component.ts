@@ -9,9 +9,11 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 export class LoginFormComponent implements OnInit {
 
 
-  @Output() onSubmit:EventEmitter<any>;
+  @Output('form') onSubmit:EventEmitter<any>;
+  @Output('google') onGSubmit:EventEmitter<any>;
   constructor() {
     this.onSubmit=new EventEmitter<any>();
+    this.onGSubmit=new EventEmitter<any>();
   }
 
   ngOnInit() {
@@ -19,5 +21,9 @@ export class LoginFormComponent implements OnInit {
 
   login(values){
     this.onSubmit.emit(values);
+  }
+
+  googleLogin(){
+    this.onGSubmit.emit();
   }
 }

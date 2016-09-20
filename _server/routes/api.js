@@ -6,7 +6,8 @@ var user={
   "firstname": "CYRIL",
   "lastname": "BALIT",
   "username": "cbalit",
-  "id":"123456"
+  "id":"123456",
+  "iconURL":"https://randomuser.me/portraits/men/86.jpg"
 };
 
 

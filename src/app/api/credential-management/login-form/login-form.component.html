@@ -1,5 +1,13 @@
 <form #loginForm="ngForm">
   <md-input placeholder="username" class="full-width" required name="username" ngModel autocomplete="username"></md-input>
   <md-input placeholder="password" type="password" required name="password" ngModel class="full-width" autocomplete="current-password"></md-input>
-  <button md-raised-button (click)="login(loginForm.value)" [disabled]="!loginForm.form.valid">Login</button>
+  <section class="actions">
+    <button md-raised-button (click)="login(loginForm.value)" [disabled]="!loginForm.form.valid">Login</button>
+    <h3>OR</h3>
+    <section class="social">
+      <img width="50" src="images/google.png" alt="" (click)="googleLogin()" />
+      <img width="50" src="images/Facebook.png" alt="" />
+      <img width="50" src="images/twitter.png" alt="" />
+    </section>
+  </section>
 </form>

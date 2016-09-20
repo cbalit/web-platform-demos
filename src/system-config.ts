@@ -63,7 +63,6 @@ const barrels: string[] = [
   'app/api/credential-management',
   'app/api/credential-management/login-form',
   'app/api/credential-management/credential-core',
-  'app/api/credential-management/platform',
   'app/api/credential-management/credential-core/providers',
   /** @cli-barrel */
 ];

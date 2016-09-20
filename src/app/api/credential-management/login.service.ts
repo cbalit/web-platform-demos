@@ -13,13 +13,16 @@ export class LoginService {
     //Register Config on credential service
     this.credentialService.config=LoginConfig;
     this.hasCredentialEnable=this.credentialService.hasCredentialEnable();
-    this.credentialService.getCredentials().subscribe(cred=> {
-      if (cred) {
-        this.hasCredentials=true;
-      }
-    });
   }
 
+
+  getCredentials(){
+    return this.credentialService.getCredentials();
+  }
+
+  autologin(cred){
+    return this.credentialService.autologin(cred);
+  }
 
   login(values){
     if(this.hasCredentialEnable){
@@ -54,7 +57,7 @@ export class LoginService {
   }
 
   logout(){
-
+    return this.credentialService.logout();
   }
 
 

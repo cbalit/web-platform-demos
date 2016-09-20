@@ -25,6 +25,10 @@ export class PwdProviderService implements CredentialProvider{
     return this.toObservable(promise);
   }
 
+  autologin(cred){
+    return this.proceedLogin(cred);
+  }
+
   login(values){
     let form = new FormData();
     form.append('id', values.username);

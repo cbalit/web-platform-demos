@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BrowserWebCredentials } from '../platform';
 import { Http, Headers } from '@angular/http';
-import { Credentials, PasswordCredential} from './types';
+import { Credentials } from './types';
 import { Observable } from 'rxjs/Observable';
 import { PwdProviderService } from './providers';
 import { GoogleProviderService } from './providers';
@@ -14,8 +13,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 @Injectable()
 export class CredentialCoreService {
 
-  public GOOGLE_SIGNIN = 'https://accounts.google.com';
-  public FACEBOOK_LOGIN = 'https://www.facebook.com';
+  public static GOOGLE_SIGNIN = 'https://accounts.google.com';
+  public static FACEBOOK_LOGIN = 'https://www.facebook.com';
 
   private cred:Credentials;
   private _config;
@@ -29,8 +28,8 @@ export class CredentialCoreService {
     return Observable.fromPromise(promise)
   }
 
-  constructor(private _webCred:BrowserWebCredentials, private http:Http) {
-    this.cred = _webCred.getCredentials();
+  constructor(private http:Http) {
+    this.cred = (<ExtendedNavigator>navigator).credentials;
   }
 
 
@@ -47,18 +46,38 @@ export class CredentialCoreService {
       password: true,
       federated: {
         providers: [
-          this.GOOGLE_SIGNIN,
-          this.FACEBOOK_LOGIN
+          CredentialCoreService.GOOGLE_SIGNIN,
+          CredentialCoreService.FACEBOOK_LOGIN
         ]
       }
     });
     return this.toObservable(promise);
   }
 
+  autologin(cred){
+    let provider;
+    switch (cred.type) {
+      case 'password':
+            provider=new PwdProviderService(this.cred,this.http,this._config.SERVER_LOGIN_URL);
+            break;
+      case 'federated':
+        switch (cred.provider) {
+          case CredentialCoreService.GOOGLE_SIGNIN:
+            // Return Promise from `gSignIn`
+            provider=new GoogleProviderService(this.cred);
+            break;
+          case CredentialCoreService.FACEBOOK_LOGIN:
+            break;
+        }
+        break;
+    }
+    return provider.autologin(cred);
+  }
+
 
   onPwSignIn(values) {
-    let pwdProvider=new PwdProviderService(this.cred,this.http,this._config.SERVER_LOGIN_URL);
-    return pwdProvider.login(values);
+    let provider=new PwdProviderService(this.cred,this.http,this._config.SERVER_LOGIN_URL);
+    return provider.login(values);
   }
 
 

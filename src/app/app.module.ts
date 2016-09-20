@@ -34,7 +34,7 @@ import { HomeComponent }  from './+home/';
 import { FeatureComponent }  from './+feature/';
 import { ApiCardComponent }  from './shared/';
 import { WebBluetoothComponent, BluetoothCore, BrowserWebBluetooth}  from './api/';
-import { CredentialManagementComponent,LoginFormComponent,LoginService,CredentialCoreService,BrowserWebCredentials }  from './api/credential-management';
+import { CredentialManagementComponent,LoginFormComponent,LoginService,CredentialCoreService }  from './api/credential-management';
 
 @NgModule({
   imports: [
@@ -57,8 +57,7 @@ import { CredentialManagementComponent,LoginFormComponent,LoginService,Credentia
   providers: [
     BrowserWebBluetooth,
     LoginService,
-    CredentialCoreService,
-    BrowserWebCredentials
+    CredentialCoreService
     // {
     //   provide: BluetoothCore, useFactory: (dep) => {
     //     return new BluetoothCore(dep);

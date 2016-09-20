@@ -27,6 +27,12 @@ export class GoogleProviderService implements CredentialProvider{
     return this.toObservable(promise);
   }
 
+  autologin(cred){
+    return this.proceedLogin(cred)
+        .map(googleUser=>this.getUserFormProfile(googleUser));
+
+  }
+
   login(id){
     return this.proceedLogin(id)
       .flatMap(googleUser=>this.storeCredentials(googleUser));
@@ -56,13 +62,7 @@ export class GoogleProviderService implements CredentialProvider{
   }
 
   storeCredentials(googleUser){
-    let user={
-      id: googleUser.getBasicProfile().getId(),
-      username: googleUser.getBasicProfile().getName(),
-      firstname: googleUser.getBasicProfile().getGivenName(),
-      lastname: googleUser.getBasicProfile().getFamilyName(),
-      iconURL: googleUser.getBasicProfile().getImageUrl() || ''
-    };
+    let user = this.getUserFormProfile(googleUser);
     let cred = new (<ExtendedWindow>window).FederatedCredential({
       id: googleUser.getBasicProfile().getId(),
       name: googleUser.getBasicProfile().getName(),
@@ -71,5 +71,15 @@ export class GoogleProviderService implements CredentialProvider{
     });
     var promise = this.cred.store(cred).then(()=>user);
     return this.toObservable(promise);
+  }
+
+  getUserFormProfile(googleUser){
+    return {
+      id: googleUser.getBasicProfile().getId(),
+      username: googleUser.getBasicProfile().getName(),
+      firstname: googleUser.getBasicProfile().getGivenName(),
+      lastname: googleUser.getBasicProfile().getFamilyName(),
+      iconURL: googleUser.getBasicProfile().getImageUrl() || ''
+    };
   }
 }
