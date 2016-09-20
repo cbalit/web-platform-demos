@@ -27,25 +27,28 @@ export class CredentialManagementComponent implements OnInit {
 
   tryLogin(){
     if(this.hasCredentials){
-
+      //TODO autologin
     }
     else{
       this.displayForm=true;
     }
   }
 
+
   login(values){
-    let form = new FormData();
-    form.append('id',values.username);
-    form.append('username',values.username);
-    form.append('password',values.password);
-
-
-    this.loginService.login(form).then(user=>{
+    this.loginService.login(values).subscribe(user=>{
       this.user=user;
       this.displayForm=false;
     });
   }
+
+  googleLogin(){
+    this.loginService.googleLogin().subscribe(user=>{
+      this.user=user;
+      this.displayForm=false;
+    });
+  }
+
 
   logout(){
     this.loginService.logout();

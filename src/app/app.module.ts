@@ -1,7 +1,7 @@
 // CORE DEPS
 import { NgModule } from '@angular/core';
 import { enableProdMode } from '@angular/core';
-import { HTTP_PROVIDERS } from '@angular/http';
+import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule }   from '@angular/forms';
@@ -41,6 +41,7 @@ import { CredentialManagementComponent,LoginFormComponent,LoginService,Credentia
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpModule,
     AppRouterModule,
     ...MD_MODULES
   ],

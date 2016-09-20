@@ -17,5 +17,7 @@ interface ExtendedNavigator extends Navigator {
 interface ExtendedWindow extends Window {
   TextDecoder: any;
   PasswordCredential(FormData):void;
+  FederatedCredential(FormData):void;
+  gapi:any;
 }
 

@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import { CredentialCoreService } from './credential-core';
 import { BrowserWebCredentials } from './platform';
-
+import { LoginConfig } from './config';
 @Injectable()
 export class LoginService {
 
   public hasCredentialEnable:boolean;
   public hasCredentials:boolean;
 
-  constructor(private credentialService:CredentialCoreService) {
+  constructor(private http:Http, private credentialService:CredentialCoreService) {
+    //Register Config on credential service
+    this.credentialService.config=LoginConfig;
     this.hasCredentialEnable=this.credentialService.hasCredentialEnable();
-    this.credentialService.getCredentials().then(cred=> {
+    this.credentialService.getCredentials().subscribe(cred=> {
       if (cred) {
         this.hasCredentials=true;
       }
@@ -18,36 +21,33 @@ export class LoginService {
   }
 
 
-  login(form){
-
-    return this.credentialService.getCredentials().then(cred=>{
-      if(cred){
-        //do login
-        console.log("credentials");
-        return this.serverLoginWithCredentials(cred).then((user)=>{
-          return user;
-        })
-      }
-      else{
-        console.log("no credentials");
-        return this.serverLogin(form).then((user)=>{
-          let cred={
-            id:form.get('id'),
-            username:form.get('username'),
-            password:form.get('password')
-          };
-          return this.credentialService.storeCredentials(cred).then(()=>{
-            return user;
-          })
-        })
-      }
-    })
+  login(values){
+    if(this.hasCredentialEnable){
+     return this.credentialService.onPwSignIn(values);
+    }
+    else{
+      //MANUAL FALLBACK
+      return this.authenticateWithServer(values);
+    }
   }
 
-
-  serverLoginWithCredentials(cred){
-    return this.fakeResponse();
+  googleLogin(){
+    return this.credentialService.onGSignIn();
   }
+
+  authenticateWithServer = function(values) {
+    var url = LoginConfig.SERVER_LOGIN_URL;
+
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    return this.http.post(url,values,{
+        headers: headers
+      })
+      .map(res=>res.json())
+      .flatMap(user=>this.storeCredentials(user))
+  };
+
+
 
   serverLogin(form){
     return this.fakeResponse();
